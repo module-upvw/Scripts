@@ -19,11 +19,12 @@ local function Esp(obj, Color)
     Tag.TextColor3 = Color
 end
 
-local Rep1 = game:GetService("ReplicatedFirst") 
-local Rep = game:GetService("ReplicatedStorage") 
-
 local Player = game:GetService("Players").LocalPlayer
 
+local function RHum() return Player.Character:WaitForChild("Humanoid") end
+
+local Rep1 = game:GetService("ReplicatedFirst") 
+local Rep = game:GetService("ReplicatedStorage") 
 
 if game.PlaceId == 17457039279 then
     local Ent = workspace.Entities:GetChildren() 
@@ -55,9 +56,19 @@ if game.PlaceId == 17457039279 then
             end) 
         end
     end) 
-    while task.wait(0.5) do
-        if Player.Character and Player.Character.Humanoid then
-            Player.Character.Humanoid.WalkSpeed += 15
-        end
+    local Humanoid = RHum() 
+    local hasBoost = true 
+    local isUpdating = false 
+
+    local function onSpeedChanged()
+	    if isUpdating then return end 
+	    if not hasBoost then return end 
+	
+	    isUpdating = true
+	    Humanoid.WalkSpeed += 14
+	    isUpdating = false
     end
+
+    Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(onSpeedChanged)
+    onSpeedChanged()
 end
