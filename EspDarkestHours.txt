@@ -39,10 +39,10 @@ if game.PlaceId == 17457039279 then
     end
 
     Sprint.MouseButton1Click:Connect(function() 
-        task.delay(0.1, function() Player.Character.Humanoid.WalkSpeed += 10 end) 
-    end) -- plis
+        Player.Character.Humanoid.WalkSpeed += 15
+    end)
 
-    Player.Character.Humanoid.WalkSpeed += 10
+    Player.Character.Humanoid.WalkSpeed += 15
 
     Rep1.Assets.UI.Main.UI.StaminaVignette.Position = UDim2.new(5, 0, 0, 0) 
 
