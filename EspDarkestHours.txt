@@ -40,7 +40,7 @@ if game.PlaceId == 17457039279 then
 
     Sprint.MouseButton1Click:Connect(function() 
         task.delay(0.1, function() Player.Character.Humanoid.WalkSpeed += 10 end) 
-    end) 
+    end) -- plis
 
     Player.Character.Humanoid.WalkSpeed += 10
 
