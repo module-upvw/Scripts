@@ -42,6 +42,8 @@ if game.PlaceId == 17457039279 then
         task.delay(0.1, function() Player.Character.Humanoid.WalkSpeed += 10 end) 
     end
 
+    Player.Character.Humanoid.WalkSpeed += 10
+
     Rep1.Assets.UI.Main.UI.StaminaVignette.Position = UDim2.new(5, 0, 0, 0) 
 
     Player.CameraMaxZoomDistance = 30
