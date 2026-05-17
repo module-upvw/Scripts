@@ -21,7 +21,7 @@ end
 
 local Player = game:GetService("Players").LocalPlayer
 
-local function RHum() return Player.Character:WaitForChild("Humanoid") end
+local Ui = Player.PlayerGui
 
 local Rep1 = game:GetService("ReplicatedFirst") 
 local Rep = game:GetService("ReplicatedStorage") 
@@ -29,6 +29,18 @@ local Rep = game:GetService("ReplicatedStorage")
 if game.PlaceId == 17457039279 then
     local Ent = workspace.Entities:GetChildren() 
     local Enty = workspace.Entities
+    local Sprint
+
+    for _, v in ipairs(Ui:GetDescendants()) do
+        if v.Name == "Sprint" then
+            Sprint = v
+            break
+        end
+    end
+
+    Sprint.MouseButton1Click:Connect(function() 
+        task.delay(0.1, function() Player.Character.Humanoid.WalkSpeed += 10 end) 
+    end
 
     Rep1.Assets.UI.Main.UI.StaminaVignette.Position = UDim2.new(5, 0, 0, 0) 
 
@@ -56,19 +68,4 @@ if game.PlaceId == 17457039279 then
             end) 
         end
     end) 
-    local Humanoid = RHum() 
-    local hasBoost = true 
-    local isUpdating = false 
-
-    local function onSpeedChanged()
-	    if isUpdating then return end 
-	    if not hasBoost then return end 
-	
-	    isUpdating = true
-	    Humanoid.WalkSpeed += 14
-	    isUpdating = false
-    end
-
-    Humanoid:GetPropertyChangedSignal("WalkSpeed"):Connect(onSpeedChanged)
-    onSpeedChanged()
 end
