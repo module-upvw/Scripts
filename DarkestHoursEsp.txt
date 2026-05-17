@@ -1,1 +1,58 @@
+local function Esp(obj, Color) 
+    local H = Instance.new("Highlight", obj) 
+    H.FillColor = Color
+    H.OutlineTransparency = 1
 
+    local BBG = Instance.new("BillboardGui", obj) 
+    BBG.Size = UDim2.new(1, 0, 0.5, 0) 
+    BBG.AlwaysOnTop = true
+    BBG.Adornee = obj
+    BBG.Active = true
+    BBG.SizeOffset = Vector2.new(-2, 0) 
+    BBG.StudsOffsetWorldSpace = Vector3.new(0, 6, 0) 
+
+    local Tag = Instance.new("TextLabel", BBG) 
+    Tag.Text = obj.Name
+    Tag.Size = UDim2.new(5, 0, 5, 0) 
+    Tag.TextScaled = true
+    Tag.BackgroundTransparency = 1
+    Tag.TextColor3 = Color
+end
+
+local Rep1 = game:GetService("ReplicatedFirst") 
+local Rep = game:GetService("ReplicatedStorage") 
+
+local Player = game:GetService("Players").LocalPlayer
+
+
+if game.PlaceId == 17457039279 then
+    local Ent = workspace.Entities:GetChildren() 
+    local Enty = workspace.Entities
+
+    Rep1.Assets.UI.Main.UI.StaminaVignette.Position = UDim2.new(5, 0, 0, 0) 
+
+    Player.CameraMaxZoomDistance = 30
+
+    for _, v in ipairs(Ent) do
+        if not v:IsA("Folder") then
+            Esp(v, Color3.new(1, 1, 1))
+        else
+            for _, f in ipairs(v:GetChildren()) do
+                if f:IsA("Model") then Esp(f, Color3.new(1, 1, 1)) end
+            end
+        end
+    end
+    Enty.ChildAdded:Connect(function(v) 
+         Enty:WaitForChild(v.Name) 
+        if not v:IsA("Folder") then
+            Esp(v, Color3.new(1, 1, 1))
+      else 
+            v.ChildAdded:Connect(function(f) 
+                v:WaitForChild(f.Name) 
+                if f:IsA("Model") then
+                    Esp(f, Color3.new(1, 1, 1))
+                end
+            end) 
+        end
+    end) 
+end
