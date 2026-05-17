@@ -55,4 +55,9 @@ if game.PlaceId == 17457039279 then
             end) 
         end
     end) 
+    while task.wait(0.5) do
+        if Player.Character and Player.Character.Humanoid then
+            Player.Character.Humanoid.Walkspeed =+ 15
+        end
+    end
 end
