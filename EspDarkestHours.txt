@@ -29,20 +29,6 @@ local Rep = game:GetService("ReplicatedStorage")
 if game.PlaceId == 17457039279 then
     local Ent = workspace.Entities:GetChildren() 
     local Enty = workspace.Entities
-    local Sprint
-
-    for _, v in ipairs(Ui:GetDescendants()) do
-        if v.Name == "Sprint" then
-            Sprint = v
-            break
-        end
-    end
-
-    Sprint.MouseButton1Click:Connect(function() 
-        Player.Character.Humanoid.WalkSpeed += 15
-    end)
-
-    Player.Character.Humanoid.WalkSpeed += 15
 
     Rep1.Assets.UI.Main.UI.StaminaVignette.Position = UDim2.new(5, 0, 0, 0) 
 
