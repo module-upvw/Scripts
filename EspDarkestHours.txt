@@ -30,6 +30,12 @@ if game.PlaceId == 17457039279 then
     local Ent = workspace.Entities:GetChildren() 
     local Enty = workspace.Entities
 
+    local T = require(game:GetService("ReplicatedStorage").Shared.Classes.SharedCharacter.Normal) 
+
+    function T.StepMovementSpeed(p19, p20)
+        p19.Speed = 100
+    end
+
     Rep1.Assets.UI.Main.UI.StaminaVignette.Position = UDim2.new(5, 0, 0, 0) 
 
     Player.CameraMaxZoomDistance = 30
