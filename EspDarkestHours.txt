@@ -53,7 +53,7 @@ if game.PlaceId == 17457039279 then
          Enty:WaitForChild(v.Name) 
         if not v:IsA("Folder") then
             Esp(v, Color3.new(1, 1, 1))
-      else 
+        else 
             v.ChildAdded:Connect(function(f) 
                 v:WaitForChild(f.Name) 
                 if f:IsA("Model") then
