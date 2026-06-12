@@ -68,26 +68,22 @@ if game.PlaceId == 17457039279 then
 
     for _, v in ipairs(Ent) do
         if not v:IsA("Folder") and v:IsA("Model") then
-            Ent:WaitForChild(v.Name) 
             Esp(v, Color3.new(1, 1, 1))
         else
             for _, f in ipairs(v:GetChildren()) do
                 if f:IsA("Model") then
-                    v:WaitForChild(f.Name) 
                     Esp(f, Color3.new(1, 1, 1))
                 end
             end
         end
     end
 
-    Enty.ChildAdded:Connect(function(v) 
-        Enty:WaitForChild(v.Name) 
+    Enty.ChildAdded:Connect(function(v)
         task.wait(1) 
         if not v:IsA("Folder") then
             Esp(v, Color3.new(1, 1, 1))
         else 
-            v.ChildAdded:Connect(function(f) 
-                v:WaitForChild(f.Name)
+            v.ChildAdded:Connect(function() 
                 task.wait(1) 
                 if f:IsA("Model") then
                     Esp(f, Color3.new(1, 1, 1))
