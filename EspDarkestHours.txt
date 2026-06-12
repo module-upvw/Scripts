@@ -20,24 +20,59 @@ local function Esp(obj, Color)
 end
 
 local Player = game:GetService("Players").LocalPlayer
-
 local Ui = Player.PlayerGui
-
 local Rep1 = game:GetService("ReplicatedFirst") 
 local Rep = game:GetService("ReplicatedStorage") 
 
 if game.PlaceId == 17457039279 then
     local Ent = workspace.Entities:GetChildren() 
     local Enty = workspace.Entities
+    local SV
 
+    for _, v in ipairs(Ui:GetDescendants()) do
+        if v.Name == "StaminaVignette" then
+            SV = v
+            break
+        end
+    end
+ 
     local T = require(game:GetService("ReplicatedStorage").Shared.Classes.SharedCharacter.Normal) 
 
-    function T.StepMovementSpeed(p19, p20)
-        p19.Speed = 100
+    local v_u_7 = {
+        ["Sprint"] = 1,
+        ["Walk"] = 0.7,
+        ["Crouch"] = 0.25
+    }
+
+    T.StepMovementSpeed = function(p19, p20) 
+        local Rig = Player.Character or Player.CharacterAdded:Wait()
+        local Humanoid = Rig:FindFirstChildOfClass("Humanoid")
+
+        local v21 = p19:GetMovementInput()
+        local v22 = v_u_7[v21] or 0.7
+        local v23 = p19.SharedCharacterObject.State.Input.MoveVector.Magnitude <= 0.1 and 0.1 or (p19.CurrentSubState == "Climb" and 0.35 or v22)
+        local v24 = p20 / 0.016666666666666666
+	
+            local v25 = v23 - p19.Speed
+            local v26
+            if v21 == "Sprint" then
+                v26 = v25 / 10
+            elseif v21 == "Normal" then
+                v26 = v25 / 20
+            else
+                v26 = v25 / 35
+            end
+            p19.Speed = p19.Speed + v26 * v24
+
+        local SpeedMultiplier = 4.7
+	
+        if Humanoid then
+            Humanoid.WalkSpeed = (p19.Speed * 16) * SpeedMultiplier
+        end
     end
 
     Rep1.Assets.UI.Main.UI.StaminaVignette.Position = UDim2.new(5, 0, 0, 0) 
-
+    SV.Position = UDim2.new(5, 0, 0, 0) 
     Player.CameraMaxZoomDistance = 30
 
     for _, v in ipairs(Ent) do
@@ -49,8 +84,9 @@ if game.PlaceId == 17457039279 then
             end
         end
     end
+
     Enty.ChildAdded:Connect(function(v) 
-         Enty:WaitForChild(v.Name) 
+        Enty:WaitForChild(v.Name) 
         if not v:IsA("Folder") then
             Esp(v, Color3.new(1, 1, 1))
         else 
