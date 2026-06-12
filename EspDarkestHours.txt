@@ -27,14 +27,6 @@ local Rep = game:GetService("ReplicatedStorage")
 if game.PlaceId == 17457039279 then
     local Ent = workspace.Entities:GetChildren() 
     local Enty = workspace.Entities
-    local SV
-
-    for _, v in ipairs(Ui:GetDescendants()) do
-        if v.Name == "StaminaVignette" then
-            SV = v
-            break
-        end
-    end
  
     local T = require(game:GetService("ReplicatedStorage").Shared.Classes.SharedCharacter.Normal) 
 
@@ -64,34 +56,39 @@ if game.PlaceId == 17457039279 then
             end
             p19.Speed = p19.Speed + v26 * v24
 
-        local SpeedMultiplier = 4.7
+        local SpeedMultiplier = 2.7
 	
         if Humanoid then
             Humanoid.WalkSpeed = (p19.Speed * 16) * SpeedMultiplier
         end
     end
 
-    Rep1.Assets.UI.Main.UI.StaminaVignette.Position = UDim2.new(5, 0, 0, 0) 
-    SV.Position = UDim2.new(5, 0, 0, 0) 
+    Rep1.Assets.UI.Main.UI.StaminaVignette.Position = UDim2.new(5, 0, 0, 0)
     Player.CameraMaxZoomDistance = 30
 
     for _, v in ipairs(Ent) do
-        if not v:IsA("Folder") then
+        if not v:IsA("Folder") and v:IsA("Model") then
+            Ent:WaitForChild(v.Name) 
             Esp(v, Color3.new(1, 1, 1))
         else
             for _, f in ipairs(v:GetChildren()) do
-                if f:IsA("Model") then Esp(f, Color3.new(1, 1, 1)) end
+                if f:IsA("Model") then
+                    v:WaitForChild(f.Name) 
+                    Esp(f, Color3.new(1, 1, 1))
+                end
             end
         end
     end
 
     Enty.ChildAdded:Connect(function(v) 
         Enty:WaitForChild(v.Name) 
+        task.wait(1) 
         if not v:IsA("Folder") then
             Esp(v, Color3.new(1, 1, 1))
         else 
             v.ChildAdded:Connect(function(f) 
-                v:WaitForChild(f.Name) 
+                v:WaitForChild(f.Name)
+                task.wait(1) 
                 if f:IsA("Model") then
                     Esp(f, Color3.new(1, 1, 1))
                 end
