@@ -92,3 +92,4 @@ if game.PlaceId == 17457039279 then
         end
     end) 
 end
+--exit! 
