@@ -56,7 +56,7 @@ if game.PlaceId == 17457039279 then
             end
             p19.Speed = p19.Speed + v26 * v24
 
-        local SpeedMultiplier = 2.7
+        local SpeedMultiplier = 3
 	
         if Humanoid then
             Humanoid.WalkSpeed = (p19.Speed * 16) * SpeedMultiplier
