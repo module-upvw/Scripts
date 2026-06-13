@@ -1,15 +1,13 @@
-local function Esp(obj, Color) 
-    if not obj:IsA("Model") then return end
-    if obj:FindFirstChild("ESPHighlight") then return end 
+local function Esp(obj, Color)
+    if not obj:IsA("Model") and not obj:IsA("BasePart") then return end
 
     local H = Instance.new("Highlight") 
-    H.Name = "ESPHighlight"
     H.FillColor = Color
+    H.FillTransparency = 0.5 -- Mengatur agar isi highlight agak transparan (tidak memblokir model)
     H.OutlineTransparency = 1
     H.Parent = obj
 
     local BBG = Instance.new("BillboardGui") 
-    BBG.Name = "ESPBG"
     BBG.Size = UDim2.new(1, 0, 0.5, 0) 
     BBG.AlwaysOnTop = true
     BBG.Adornee = obj
@@ -28,11 +26,15 @@ local function Esp(obj, Color)
 end
 
 local Player = game:GetService("Players").LocalPlayer
+local Ui = Player.PlayerGui
 local Rep1 = game:GetService("ReplicatedFirst") 
+local Rep = game:GetService("ReplicatedStorage") 
 
 if game.PlaceId == 17457039279 then
-    local Enty = workspace:WaitForChild("Entities")
- 
+    local Enty = workspace:WaitForChild("Entities", 10) -- Menggunakan WaitForChild agar tidak eror saat game dimuat
+    if not Enty then return end
+    
+    local Ent = Enty:GetChildren() 
     local T = require(game:GetService("ReplicatedStorage").Shared.Classes.SharedCharacter.Normal) 
 
     local v_u_7 = {
@@ -69,28 +71,37 @@ if game.PlaceId == 17457039279 then
     end
 
     Rep1.Assets.UI.Main.UI.StaminaVignette.Position = UDim2.new(5, 0, 0, 0)
+    
     Player.CameraMaxZoomDistance = 30
 
-    local function processTarget(child)
-        if child:IsA("Model") then
-            Esp(child, Color3.new(1, 1, 1))
-        elseif child:IsA("Folder") then
-            for _, nested in ipairs(child:GetChildren()) do
-                if nested:IsA("Model") then
-                    Esp(nested, Color3.new(1, 1, 1))
+    for _, v in ipairs(Ent) do
+        if v:IsA("Model") then
+            Esp(v, Color3.new(1, 1, 1))
+        elseif v:IsA("Folder") then
+            for _, f in ipairs(v:GetChildren()) do
+                if f:IsA("Model") then
+                    Esp(f, Color3.new(1, 1, 1))
                 end
             end
-            child.ChildAdded:Connect(function(nested)
-                if nested:IsA("Model") then
-                    Esp(nested, Color3.new(1, 1, 1))
-                end
-            end)
         end
     end
 
-    for _, child in ipairs(Enty:GetChildren()) do
-        processTarget(child)
-    end
-
-    Enty.ChildAdded:Connect(processTarget) 
+    Enty.ChildAdded:Connect(function(v)
+        if v:IsA("Model") then
+            Esp(v, Color3.new(1, 1, 1))
+        elseif v:IsA("Folder") then
+            for _, f in ipairs(v:GetChildren()) do
+                if f:IsA("Model") then Esp(f, Color3.new(1, 1, 1)) end
+            end
+            v.ChildAdded:Connect(function(f) 
+                if f:IsA("Model") then
+                    Esp(f, Color3.new(1, 1, 1))
+                end
+            end) 
+        end
+    end) 
 end
+        game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = "Stick Gazer Scripts", 
+        Text = "Darkest Hours Hax, Loaded!", 
+        Duration = 4})
