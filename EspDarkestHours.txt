@@ -1,32 +1,37 @@
 local function Esp(obj, Color) 
-    local H = Instance.new("Highlight", obj) 
+    if not obj:IsA("Model") then return end
+    if obj:FindFirstChild("ESPHighlight") then return end 
+
+    local H = Instance.new("Highlight") 
+    H.Name = "ESPHighlight"
     H.FillColor = Color
     H.OutlineTransparency = 1
+    H.Parent = obj
 
-    local BBG = Instance.new("BillboardGui", obj) 
+    local BBG = Instance.new("BillboardGui") 
+    BBG.Name = "ESPBG"
     BBG.Size = UDim2.new(1, 0, 0.5, 0) 
     BBG.AlwaysOnTop = true
     BBG.Adornee = obj
     BBG.Active = true
     BBG.SizeOffset = Vector2.new(-2, 0) 
     BBG.StudsOffsetWorldSpace = Vector3.new(0, 6, 0) 
+    BBG.Parent = obj
 
-    local Tag = Instance.new("TextLabel", BBG) 
+    local Tag = Instance.new("TextLabel") 
     Tag.Text = obj.Name
     Tag.Size = UDim2.new(5, 0, 5, 0) 
     Tag.TextScaled = true
     Tag.BackgroundTransparency = 1
     Tag.TextColor3 = Color
+    Tag.Parent = BBG
 end
 
 local Player = game:GetService("Players").LocalPlayer
-local Ui = Player.PlayerGui
 local Rep1 = game:GetService("ReplicatedFirst") 
-local Rep = game:GetService("ReplicatedStorage") 
 
 if game.PlaceId == 17457039279 then
-    local Ent = workspace.Entities:GetChildren() 
-    local Enty = workspace.Entities
+    local Enty = workspace:WaitForChild("Entities")
  
     local T = require(game:GetService("ReplicatedStorage").Shared.Classes.SharedCharacter.Normal) 
 
@@ -45,16 +50,16 @@ if game.PlaceId == 17457039279 then
         local v23 = p19.SharedCharacterObject.State.Input.MoveVector.Magnitude <= 0.1 and 0.1 or (p19.CurrentSubState == "Climb" and 0.35 or v22)
         local v24 = p20 / 0.016666666666666666
 	
-            local v25 = v23 - p19.Speed
-            local v26
-            if v21 == "Sprint" then
-                v26 = v25 / 10
-            elseif v21 == "Normal" then
-                v26 = v25 / 20
-            else
-                v26 = v25 / 35
-            end
-            p19.Speed = p19.Speed + v26 * v24
+        local v25 = v23 - p19.Speed
+        local v26
+        if v21 == "Sprint" then
+            v26 = v25 / 10
+        elseif v21 == "Normal" then
+            v26 = v25 / 20
+        else
+            v26 = v25 / 35
+        end
+        p19.Speed = p19.Speed + v26 * v24
 
         local SpeedMultiplier = 3
 	
@@ -66,27 +71,26 @@ if game.PlaceId == 17457039279 then
     Rep1.Assets.UI.Main.UI.StaminaVignette.Position = UDim2.new(5, 0, 0, 0)
     Player.CameraMaxZoomDistance = 30
 
-    for _, v in ipairs(Ent) do
-        if not v:IsA("Folder") and v:IsA("Model") then
-            Esp(v, Color3.new(1, 1, 1))
-        else
-            for _, f in ipairs(v:GetChildren()) do
-                if f:IsA("Model") then
-                    Esp(f, Color3.new(1, 1, 1))
+    local function processTarget(child)
+        if child:IsA("Model") then
+            Esp(child, Color3.new(1, 1, 1))
+        elseif child:IsA("Folder") then
+            for _, nested in ipairs(child:GetChildren()) do
+                if nested:IsA("Model") then
+                    Esp(nested, Color3.new(1, 1, 1))
                 end
             end
+            child.ChildAdded:Connect(function(nested)
+                if nested:IsA("Model") then
+                    Esp(nested, Color3.new(1, 1, 1))
+                end
+            end)
         end
     end
 
-    Enty.ChildAdded:Connect(function(v)
-        if not v:IsA("Folder") and v:IsA("Model") then
-            Esp(v, Color3.new(1, 1, 1))
-        else 
-            v.ChildAdded:Connect(function()
-                if f:IsA("Model") then
-                    Esp(f, Color3.new(1, 1, 1))
-                end
-            end) 
-        end
-    end) 
+    for _, child in ipairs(Enty:GetChildren()) do
+        processTarget(child)
+    end
+
+    Enty.ChildAdded:Connect(processTarget) 
 end
