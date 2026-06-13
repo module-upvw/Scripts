@@ -3,7 +3,7 @@ local function Esp(obj, Color)
 
     local H = Instance.new("Highlight") 
     H.FillColor = Color
-    H.FillTransparency = 0.5 -- Mengatur agar isi highlight agak transparan (tidak memblokir model)
+    H.FillTransparency = 0.5
     H.OutlineTransparency = 1
     H.Parent = obj
 
@@ -31,7 +31,7 @@ local Rep1 = game:GetService("ReplicatedFirst")
 local Rep = game:GetService("ReplicatedStorage") 
 
 if game.PlaceId == 17457039279 then
-    local Enty = workspace:WaitForChild("Entities", 10) -- Menggunakan WaitForChild agar tidak eror saat game dimuat
+    local Enty = workspace:WaitForChild("Entities") 
     if not Enty then return end
     
     local Ent = Enty:GetChildren() 
