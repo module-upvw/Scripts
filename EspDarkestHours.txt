@@ -97,9 +97,9 @@ if game.PlaceId == 17457039279 then
                 end
             end) 
         end
-    end) 
+    end)
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+    Title = "Stick Gazer Scripts", 
+    Text = "Darkest Hours Hax, Loaded!", 
+    Duration = 4})
 end
-        game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Stick Gazer Scripts", 
-        Text = "Darkest Hours Hax, Loaded!", 
-        Duration = 4})
