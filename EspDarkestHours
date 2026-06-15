@@ -3,9 +3,6 @@ local function Esp(obj, Color)
 
     local H2 = obj:FindFirstChildOfClass("Highlight")
 
-    local Stuffs = Instance.new("Folder", obj) 
-    Stuffs.Name = "Modifiers"
-
     if obj.Name == "Alex" or obj.Name == "Angry Munci" then
         obj.PrimaryPart.Transparency = 0
     end
@@ -14,13 +11,14 @@ local function Esp(obj, Color)
         H.FillColor = Color
         H.FillTransparency = 0.65
     else
-        local H = Instance.new("Highlight", Stuffs) 
+        local H = Instance.new("Highlight", obj) 
+        H.Name = "ModifiedESP"
         H.FillColor = Color
         H.FillTransparency = 0.65
         H.OutlineTransparency = 1
     end
 
-    local BBG = Instance.new("BillboardGui", Stuffs) 
+    local BBG = Instance.new("BillboardGui", obj) 
     BBG.Size = UDim2.new(1, 0, 0.5, 0) 
     BBG.AlwaysOnTop = true
     BBG.Adornee = obj
