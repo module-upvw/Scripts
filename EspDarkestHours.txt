@@ -34,14 +34,30 @@ local function Esp(obj, Color)
     Tag.TextColor3 = Color
 end
 
-local Player = game:GetService("Players").LocalPlayer
+local function VowelCheck(str)
+  if not str then return false end
+  return string.match(str, "^[aeiouAEIOU]") ~= nil
+end
+
+local function Notify(text, duration)
+  text = text or "Test"
+  duration = duration or 3
+  
+  game.StarterGui:SetCore("SendNotification", {
+    Title = "Stick Gazer Scripts",
+    Text = text,
+    Duration = duration
+  })
+end
+
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
 local Ui = Player.PlayerGui
 local Rep1 = game:GetService("ReplicatedFirst") 
 local Rep = game:GetService("ReplicatedStorage") 
 
 if game.PlaceId == 17457039279 then
-    local Enty = workspace:WaitForChild("Entities") 
-    
+    local Enty = workspace:WaitForChild("Entities")
     local Ent = Enty:GetChildren() 
     local T = require(game:GetService("ReplicatedStorage").Shared.Classes.SharedCharacter.Normal) 
 
@@ -106,9 +122,42 @@ if game.PlaceId == 17457039279 then
                 end
             end) 
         end
-    end) 
-        game:GetService("StarterGui"):SetCore("SendNotification", {
-        Title = "Stick Gazer Scripts", 
-        Text = "Darkest Hours Hax, Loaded!", 
-        Duration = 4})
+    end)
+  local Vips = {
+    {id = 146001336, Name = "CaptainSpinxs"},
+    {id = 4142440, Name = "Blithwin"},
+    {id = 104415244, Name = "CrazyCorrs"}
+  }
+  
+  local Roles = {
+    {Name = "Admin", ids = {117093621, 22724524, 94069144}},
+    {Name = "Head Admin", ids = {58421804, 78062344, 59426538, 45478661}},
+    {Name = "Developer", ids = {1792404260, 438265611, 5844622547, 204164105, 483318592, 323973903, 8966270, 42147575}}
+  }
+  
+  local function CheckPlayer(plr)
+    local userid = plr.UserId
+    for _, vip in ipairs(Vips) do
+      if vip.id == userid then
+        Notify(vip.Name .. " has joined your server!", 5)
+        break
+      end
+    end
+    for _, role in ipairs(Roles) do
+      if role.ids[userid] then
+        local article = VowelCheck(role.Name) and "an" or "a"
+        Notify(article .. " " .. role.Name .. " has joined your server!", 5)
+        break
+      end
+    end
+  end
+
+  for _, v in ipairs(Players:GetPlayers) do
+    CheckPlayer(v)
+  end
+  Players.PlayerAdded:Connect(function(v))
+    CheckPlayer(v)
+  end
+  
+  Notify("Darkest Hours Hax, Loaded!", 4)
 end
