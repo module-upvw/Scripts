@@ -4,12 +4,14 @@ local function Esp(obj, Color)
     local H2 = obj:FindFirstChildOfClass("Highlight")
 
     if obj.Name == "Alex" or obj.Name == "Angry Munci" then
-        obj.PrimaryPart.Transparency = 0
+        if obj.PrimaryPart then
+            obj.PrimaryPart.Transparency = 0
+        end
     end
 
     if H2 then
-        H.FillColor = Color
-        H.FillTransparency = 0.65
+        H2.FillColor = Color
+        H2.FillTransparency = 0.65
     else
         local H = Instance.new("Highlight", obj) 
         H.Name = "ModifiedESP"
@@ -43,7 +45,7 @@ local function Notify(text, duration)
   text = text or "Test"
   duration = duration or 3
   
-  game.StarterGui:SetCore("SendNotification", {
+  game:GetService("StarterGui"):SetCore("SendNotification", {
     Title = "Stick Gazer Scripts",
     Text = text,
     Duration = duration
@@ -123,41 +125,43 @@ if game.PlaceId == 17457039279 then
             end) 
         end
     end)
-  local Vips = {
-    {id = 146001336, Name = "CaptainSpinxs"},
-    {id = 4142440, Name = "Blithwin"},
-    {id = 104415244, Name = "CrazyCorrs"}
-  }
-  
-  local Roles = {
-    {Name = "Admin", ids = {117093621, 22724524, 94069144}},
-    {Name = "Head Admin", ids = {58421804, 78062344, 59426538, 45478661}},
-    {Name = "Developer", ids = {1792404260, 438265611, 5844622547, 204164105, 483318592, 323973903, 8966270, 42147575}}
-  }
-  
-  local function CheckPlayer(plr)
-    local userid = plr.UserId
-    for _, vip in ipairs(Vips) do
-      if vip.id == userid then
-        Notify(vip.Name .. " has joined your server!", 5)
-        break
-      end
-    end
-    for _, role in ipairs(Roles) do
-      if role.ids[userid] then
-        local article = VowelCheck(role.Name) and "an" or "a"
-        Notify(article .. " " .. role.Name .. " has joined your server!", 5)
-        break
-      end
-    end
-  end
 
-  for _, v in ipairs(Players:GetPlayers) do
-    CheckPlayer(v)
-  end
-  Players.PlayerAdded:Connect(function(v))
-    CheckPlayer(v)
-  end
+    local Vips = {
+        {id = 146001336, Name = "CaptainSpinxs"},
+        {id = 4142440, Name = "Blithwin"},
+        {id = 104415244, Name = "CrazyCorrs"}
+    }
   
-  Notify("Darkest Hours Hax, Loaded!", 4)
+    local Roles = {
+        {Name = "Admin", ids = {117093621, 22724524, 94069144}},
+        {Name = "Head Admin", ids = {58421804, 78062344, 59426538, 45478661}},
+        {Name = "Developer", ids = {1792404260, 438265611, 5844622547, 204164105, 483318592, 323973903, 8966270, 42147575}}
+    }
+  
+    local function CheckPlayer(plr)
+        local userid = plr.UserId
+        for _, vip in ipairs(Vips) do
+            if vip.id == userid then
+                Notify(vip.Name .. " has joined your server!", 5)
+                break
+            end
+        end
+        for _, role in ipairs(Roles) do
+            if table.find(role.ids, userid) then
+                local article = VowelCheck(role.Name) and "an" or "a"
+                Notify(article .. " " .. role.Name .. " has joined your server!", 5)
+                break
+            end
+        end
+    end
+
+    for _, v in ipairs(Players:GetPlayers()) do
+        CheckPlayer(v)
+    end
+    
+    Players.PlayerAdded:Connect(function(v)
+        CheckPlayer(v)
+    end)
+  
+    Notify("Darkest Hours Hax, Loaded!", 4)
 end
