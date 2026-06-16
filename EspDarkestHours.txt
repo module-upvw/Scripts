@@ -1,7 +1,7 @@
 local function Esp(obj, Color)
     if not obj:IsA("Model") and not obj:IsA("BasePart") then return end
 
-    local H2 = obj:FindFirstChildOfClass("Highlight")
+    local H2 = obj:FindFirstChildofClass("Highlight") 
 
     if obj.Name == "Alex" or obj.Name == "Angry Munci" then
         if obj.PrimaryPart then
@@ -12,6 +12,8 @@ local function Esp(obj, Color)
     if H2 then
         H2.FillColor = Color
         H2.FillTransparency = 0.65
+        H2.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+        H2.Name = "ModifiedESP"
     else
         local H = Instance.new("Highlight", obj) 
         H.Name = "ModifiedESP"
