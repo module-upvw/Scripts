@@ -1,6 +1,10 @@
 local function Esp(obj, Color)
     if not obj:IsA("Model") and not obj:IsA("BasePart") then return end
 
+    if obj:IsA("Model") and not obj.PrimaryPart then
+        obj:GetPropertyChangedSignal("PrimaryPart"):Wait() 
+    end
+
     local H2 = obj:FindFirstChildOfClass("Highlight") 
 
     if obj.Name == "Alex" or obj.Name == "Angry Munci" then
